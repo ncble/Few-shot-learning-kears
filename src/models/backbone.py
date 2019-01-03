@@ -62,7 +62,6 @@ def conv_block2(input_tensor,
     x = layers.Activation('relu')(x)
     return x
 
-
 def ResNet10(include_top=True,
              input_shape=None,
              pooling=None,
