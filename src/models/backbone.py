@@ -35,7 +35,7 @@ def conv_block2(input_tensor,
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = layers.Conv2D(filters1, kernel_size, strides=strides,
+    x = layers.Conv2D(filters1, kernel_size, strides=strides,padding='same',
                       kernel_initializer='he_normal',
                       name=conv_name_base + '2a')(input_tensor)
     x = layers.BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
@@ -52,12 +52,17 @@ def conv_block2(input_tensor,
     #                   name=conv_name_base + '2c')(x)
     # x = layers.BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
-    shortcut = layers.Conv2D(filters2, (1, 1), strides=strides,
+    shortcut = layers.Conv2D(filters2,
+                             #kernel_size,
+                             (1, 1),
+                             strides=strides,
                              kernel_initializer='he_normal',
                              name=conv_name_base + '1')(input_tensor)
     shortcut = layers.BatchNormalization(
         axis=bn_axis, name=bn_name_base + '1')(shortcut)
 
+    print('x.shape: ',backend.shape(x))
+    print('shortcut.shape: ', backend.shape(shortcut))
     x = layers.add([x, shortcut])
     x = layers.Activation('relu')(x)
     return x
