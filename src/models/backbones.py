@@ -50,8 +50,6 @@ def conv_block2(input_tensor,
     shortcut = layers.BatchNormalization(
         axis=bn_axis, name=bn_name_base + '1')(shortcut)
 
-    print('x.shape: ',backend.shape(x))
-    print('shortcut.shape: ', backend.shape(shortcut))
     x = layers.add([x, shortcut])
     x = layers.Activation('relu')(x)
     return x

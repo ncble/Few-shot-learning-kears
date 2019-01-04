@@ -15,69 +15,6 @@ def l2_norm(x, axis=None):
 
 
 class CosDense(Layer):
-    """Just your regular densely-connected NN layer.
-
-    `Dense` implements the operation:
-    `output = activation(dot(input, kernel) + bias)`
-    where `activation` is the element-wise activation function
-    passed as the `activation` argument, `kernel` is a weights matrix
-    created by the layer, and `bias` is a bias vector created by the layer
-    (only applicable if `use_bias` is `True`).
-
-    Note: if the input to the layer has a rank greater than 2, then
-    it is flattened prior to the initial dot product with `kernel`.
-
-    # Example
-
-    ```python
-        # as first layer in a sequential model:
-        model = Sequential()
-        model.add(Dense(32, input_shape=(16,)))
-        # now the model will take as input arrays of shape (*, 16)
-        # and output arrays of shape (*, 32)
-
-        # after the first layer, you don't need to specify
-        # the size of the input anymore:
-        model.add(Dense(32))
-    ```
-
-    # Arguments
-        units: Positive integer, dimensionality of the output space.
-        activation: Activation function to use
-            (see [activations](../activations.md)).
-            If you don't specify anything, no activation is applied
-            (ie. "linear" activation: `a(x) = x`).
-        use_bias: Boolean, whether the layer uses a bias vector.
-        kernel_initializer: Initializer for the `kernel` weights matrix
-            (see [initializers](../initializers.md)).
-        bias_initializer: Initializer for the bias vector
-            (see [initializers](../initializers.md)).
-        kernel_regularizer: Regularizer function applied to
-            the `kernel` weights matrix
-            (see [regularizer](../regularizers.md)).
-        bias_regularizer: Regularizer function applied to the bias vector
-            (see [regularizer](../regularizers.md)).
-        activity_regularizer: Regularizer function applied to
-            the output of the layer (its "activation").
-            (see [regularizer](../regularizers.md)).
-        kernel_constraint: Constraint function applied to
-            the `kernel` weights matrix
-            (see [constraints](../constraints.md)).
-        bias_constraint: Constraint function applied to the bias vector
-            (see [constraints](../constraints.md)).
-
-    # Input shape
-        nD tensor with shape: `(batch_size, ..., input_dim)`.
-        The most common situation would be
-        a 2D input with shape `(batch_size, input_dim)`.
-
-    # Output shape
-        nD tensor with shape: `(batch_size, ..., units)`.
-        For instance, for a 2D input with shape `(batch_size, input_dim)`,
-        the output would have shape `(batch_size, units)`.
-    """
-
-    #@interfaces.legacy_dense_support
     def __init__(self, units,
                  activation=None,
                  #use_bias=True,
