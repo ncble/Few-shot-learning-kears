@@ -1,6 +1,8 @@
 from src.models.backbones import ResNet10
 from keras import backend as K
 import tensorflow as tf
+from src.models.custom_models import baseline_plus
+
 ##################################
 # test backbone
 ##################################
@@ -39,3 +41,6 @@ xy_norm = K.dot(x_norm,y_norm)
 cos_similarity = xy/xy_norm
 print(cos_similarity)
 #######################################
+# check baseline_plus
+model = baseline_plus(input_shape=(224,224,3),classes=10)
+print(model.summary())

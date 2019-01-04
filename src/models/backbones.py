@@ -1,6 +1,5 @@
 from keras import backend
 from keras import layers
-from keras import models
 
 
 def conv_block2(input_tensor,
@@ -9,7 +8,7 @@ def conv_block2(input_tensor,
                stage,
                block,
                strides=(2, 2)):
-    """A block that has a conv layer at shortcut.
+    """A block that has a conv layer at shortcut. for resnet10
 
     # Arguments
         input_tensor: input tensor
@@ -23,9 +22,6 @@ def conv_block2(input_tensor,
     # Returns
         Output tensor for the block.
 
-    Note that from stage 3,
-    the first conv layer at main path is with strides=(2, 2)
-    And the shortcut should have strides=(2, 2) as well
     """
     filters1, filters2 = filters
     if backend.image_data_format() == 'channels_last':
@@ -45,15 +41,8 @@ def conv_block2(input_tensor,
                       kernel_initializer='he_normal',
                       name=conv_name_base + '2b')(x)
     x = layers.BatchNormalization(axis=bn_axis, name=bn_name_base + '2b')(x)
-    # x = layers.Activation('relu')(x)
-    #
-    # x = layers.Conv2D(filters3, (1, 1),
-    #                   kernel_initializer='he_normal',
-    #                   name=conv_name_base + '2c')(x)
-    # x = layers.BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
     shortcut = layers.Conv2D(filters2,
-                             #kernel_size,
                              (1, 1),
                              strides=strides,
                              kernel_initializer='he_normal',
@@ -67,12 +56,21 @@ def conv_block2(input_tensor,
     x = layers.Activation('relu')(x)
     return x
 
-def ResNet10(include_top=True,
-             input_shape=None,
+def ResNet10(img_input,
+             include_top=True,
              pooling=None,
-             classes=10):
-    # channel last
-    img_input = layers.Input(shape=input_shape)
+             classes=None
+             ):
+    """
+    Resnet10 backbone, attention: there is no identity block in resnet10
+    :param img_input: the input tensor
+    :param include_top:
+    :param pooling: if include_tp=False, then we choose the pooling layer
+    :param classes:
+    :return: the output tensor
+    """
+
+    # img_input = layers.Input(shape=input_shape)
     if backend.image_data_format() == 'channels_last':
         bn_axis = 3
     else:
@@ -109,7 +107,7 @@ def ResNet10(include_top=True,
             print('The output shape of `ResNet10(include_top=False)` '
                           'has been changed ')
 
-    inputs = img_input
-    model = models.Model(inputs, x, name='resnet10')
+    # inputs = img_input
+    # model = models.Model(inputs, x, name='resnet10')
 
-    return model
+    return x
