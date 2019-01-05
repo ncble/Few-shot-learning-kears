@@ -1,6 +1,6 @@
 from keras import backend
 from keras import layers
-
+from keras import models
 
 def conv_block2(input_tensor,
                kernel_size,
@@ -54,7 +54,7 @@ def conv_block2(input_tensor,
     x = layers.Activation('relu')(x)
     return x
 
-def ResNet10(img_input,
+def ResNet10(input_shape=None,
              include_top=True,
              pooling=None,
              classes=None
@@ -65,10 +65,10 @@ def ResNet10(img_input,
     :param include_top:
     :param pooling: if include_tp=False, then we choose the pooling layer
     :param classes:
-    :return: the output tensor
+    :return: backbone model
     """
 
-    # img_input = layers.Input(shape=input_shape)
+    img_input = layers.Input(shape=input_shape)
     if backend.image_data_format() == 'channels_last':
         bn_axis = 3
     else:
@@ -105,7 +105,7 @@ def ResNet10(img_input,
             print('The output shape of `ResNet10(include_top=False)` '
                           'has been changed ')
 
-    # inputs = img_input
-    # model = models.Model(inputs, x, name='resnet10')
+    inputs = img_input
+    model = models.Model(inputs, x, name='resnet10')
 
-    return x
+    return model
