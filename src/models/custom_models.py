@@ -40,7 +40,7 @@ def Baseline_plus(input_shape=None,classes=None,loadbb=False,weights_file=None,f
     # inputs = img_input
     # model = models.Model(inputs, x, name='baseline_plus')
     model = models.Model(inputs=backbone.input,outputs=classifier(backbone.output))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-4),
+    model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-3),
                           metrics=['accuracy'])
     return model
 
