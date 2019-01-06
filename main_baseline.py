@@ -9,8 +9,8 @@ import keras.backend as K
 
 # ####################### training stage ###################
 # load image
-train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
-train_val_path = 'miniImageNet_category_split_train_phase_val.pickle'
+# train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
+# train_val_path = 'miniImageNet_category_split_train_phase_val.pickle'
 
 train_train = loader.load_miniImgnet(train_train_path)
 train_val = loader.load_miniImgnet(train_val_path)
