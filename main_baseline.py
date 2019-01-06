@@ -7,7 +7,6 @@ import pickle
 from src.utils import tester
 import keras.backend as K
 
-#
 # ####################### training stage ###################
 # load image
 train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
