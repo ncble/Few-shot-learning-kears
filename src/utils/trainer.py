@@ -17,7 +17,7 @@ def train_model(model,
         print('Error! The filename for weights is empty')
         history = -1
     else:
-        save_model_path = os.path.join(weights_folder_path ,'{}.h5'.format(weights_file))
+        save_model_path = os.path.join(weights_folder_path ,weights_file)
 
         history = model.fit(x=x,y=y,
                             epochs=epochs,

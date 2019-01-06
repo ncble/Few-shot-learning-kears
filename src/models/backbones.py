@@ -92,6 +92,15 @@ def ResNet10(input_shape=None,
     x = conv_block2(x, 3, [256, 256], stage=4, block='a')
 
     x = conv_block2(x, 3, [512, 512], stage=5, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=3, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=4, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=5, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=6, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=7, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=8, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=9, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=10, block='a')
+    # x = conv_block2(x, 3, [64, 64], stage=11, block='a')
 
     if include_top:
         x = layers.GlobalAveragePooling2D(name='avg_pool')(x)

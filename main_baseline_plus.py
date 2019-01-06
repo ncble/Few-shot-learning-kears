@@ -23,8 +23,9 @@ classes = len(train_train[b'catname2label'])
 
 # train and save weights
 baseline_plus = Baseline_plus(input_shape=input_shape,classes=classes)
-baseline_plus.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-3),
-              metrics=['accuracy'])
+baseline_plus.compile(loss='sparse_categorical_crossentropy',
+                      optimizer=optimizers.Adam(lr=1e-3),
+                      metrics=['accuracy'])
 history_baseline_plus = trainer.train_model(model=baseline_plus,
                 x=train_img,y=train_label,
                 shuffle=True,

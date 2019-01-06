@@ -1,7 +1,7 @@
 from src.models.backbones import ResNet10
 from keras import backend as K
 import tensorflow as tf
-from src.models.custom_models import Baseline_plus
+from src.models.custom_models import Baseline_plus,Baseline
 import pickle
 
 ##################################
@@ -42,6 +42,6 @@ import pickle
 # cos_similarity = xy/xy_norm
 # print(cos_similarity)
 #######################################
-# check baseline_plus
-model = Baseline_plus(input_shape=(84,84,3),classes=10)
+# check baseline_plus,baseline
+model = Baseline(input_shape=(84,84,3),classes=10)
 print(model.summary())
