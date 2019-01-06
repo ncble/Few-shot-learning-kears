@@ -11,7 +11,7 @@ def train_model(model,
                 batch_size=16,
                 epochs=400 ,
                 weights_file=None ,
-                monitor='val_loss',
+                monitor='val_acc',
                 ):
     if weights_file is None:
         print('Error! The filename for weights is empty')

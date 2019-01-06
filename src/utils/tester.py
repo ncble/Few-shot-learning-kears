@@ -34,27 +34,22 @@ def create_finetuningset(dataset,way=5,shot=5,querysize=16):
         tr_img = imgs[indices_train]
         va_img = imgs[indices_val]
         te_img = imgs[indices_test]
-        tr_label = labels[indices_train]
-        va_label = labels[indices_val]
-        te_label = labels[indices_test]
+        # tr_label = labels[indices_train]
+        tr_label = [i for j in range(shot)]
+        # va_label = labels[indices_val]
+        va_label = [i for j in range(querysize)]
+        # te_label = labels[indices_test]
+        te_label = [i for j in range(querysize)]
 
         train_img[i * shot:(i + 1) * shot] = tr_img
-        train_label += list(tr_label)
+        train_label += tr_label
+        #.tolist()
         val_img[i * querysize:(i + 1) * querysize] = va_img
-        val_label += list(va_label)
+        val_label += va_label
+        #.tolist()
         test_img[i * querysize:(i + 1) * querysize] = te_img
-        test_label += list(te_label)
+        test_label += te_label
+        #.tolist()
 
     return train_img,train_label,val_img,val_label,test_img,test_label
 
-
-
-
-
-
-    pass
-
-def test_model(model,
-                x,y
-                ):
-    model.evaluate(x,y)
