@@ -62,6 +62,8 @@ history_baseline_plus = trainer.train_model(model=baseline_plus,
 pickle.dump(history_baseline_plus,open('output/history_baseline_plus.pickle','wb'))
 
 
+del train_train, train_val, train_img, train_label, val_img, val_label
+del baseline, baseline_plus, history_baseline, history_baseline_plus
 ##################### fine-tuning stage ######################
 
 test_path = 'miniImageNet_category_split_test.pickle'
