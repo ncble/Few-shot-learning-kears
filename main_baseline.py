@@ -9,7 +9,7 @@ import pickle
 # The training stage is for training backbone
 #########################################################
 # the index for the experiment of training stage
-training_experiment = 0
+training_experiment = 'training_setting'
 
 # load image
 train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
@@ -40,11 +40,11 @@ history_baseline = trainer.train_model(model=baseline,
                 val_data=(val_img,val_label),
                 batch_size=64,
                 epochs=400 ,
-                weights_file='exp{}_baseline_training.h5'.format(training_experiment), # save weights
+                weights_file='{}/baseline_training.h5'.format(training_experiment), # save weights
                 monitor='val_acc',
                 )
 
-saver.save_output(history_baseline,'exp{}_history_baseline_training.pickle'.format(training_experiment))
+saver.save_output(history_baseline,'{}/history_baseline_training.pickle'.format(training_experiment))
 #pickle.dump(history_baseline,open('output/exp{}_history_baseline_training.pickle'.format(training_experiment),'wb'))
 
 # baseline_plus
@@ -58,10 +58,10 @@ history_baseline_plus = trainer.train_model(model=baseline_plus,
                 val_data=(val_img,val_label),
                 batch_size=64,
                 epochs=400 ,
-                weights_file='exp{}_baseline_plus_training.h5'.format(training_experiment), # save weights
+                weights_file='{}/baseline_plus_training.h5'.format(training_experiment), # save weights
                 monitor='val_acc',
                 )
-saver.save_output(history_baseline_plus,'exp{}_history_baseline_plus_training.pickle'.format(training_experiment))
+saver.save_output(history_baseline_plus,'{}/history_baseline_plus_training.pickle'.format(training_experiment))
 #pickle.dump(history_baseline_plus,open('output/exp{}_history_baseline_plus_training.pickle'.format(training_experiment),'wb'))
 
 
@@ -74,9 +74,8 @@ del baseline, baseline_plus, history_baseline, history_baseline_plus
 # for training a new classifier for novel classes
 ################################################################
 # the index for the experiment of finetuning stage
-finetuning_experiment = 0
-# denotes the backbone of which training experiment will be used
-loadbb_experiment = 0
+finetuning_experiment = 'finetuning_setting'
+loadbb_experiment= 'training_setting'
 
 
 test_path = 'miniImageNet_category_split_test.pickle'
@@ -90,7 +89,7 @@ shot = 1
 train_img,train_label,val_img,val_label,test_img,test_label,labels_pick  = \
     tester.create_finetuningset(dataset=test,way=classes,shot=shot,querysize=16)
 
-saver.save_output(labels_pick,'exp{}_load{}_labelspick_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot))
+saver.save_output(labels_pick,'{}/labelspick_{}shot.pickle'.format(finetuning_experiment,shot))
 #pickle.dump(labels_pick,open('output/exp{}_load{}_labelspick_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot),'wb'))
 
 
@@ -101,7 +100,7 @@ input_shape = train_img.shape[1:]
 baseline = Baseline(input_shape=input_shape,
                     classes=classes,
                     loadbb=True,
-                    weights_file='exp{}_baseline_training.h5'.format(loadbb_experiment), # load weights
+                    weights_file='{}/baseline_training.h5'.format(loadbb_experiment), # load weights
                     freezebb=True)
 baseline.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-3),
               metrics=['accuracy'])
@@ -112,17 +111,17 @@ history_baseline = trainer.train_model(model=baseline,
                 val_data=(val_img,val_label),
                 batch_size=16,
                 epochs=100 ,
-                weights_file='exp{}_load{}_baseline_finetuning_{}shot.h5'.format(finetuning_experiment,loadbb_experiment,shot),# save weights
+                weights_file='{}/baseline_finetuning_{}shot.h5'.format(finetuning_experiment,shot),# save weights
                 monitor='val_acc',
                 )
 
-saver.save_output(history_baseline,'exp{}_load{}_history_baseline_finetuning_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot))
+saver.save_output(history_baseline,'{}/history_baseline_finetuning_{}shot.pickle'.format(finetuning_experiment,shot))
 #pickle.dump(history_baseline,open('output/exp{}_load{}_history_baseline_finetuning_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot),'wb'))
 
 # load best model and evaluate
-baseline.load_weights('weights/exp{}_load{}_baseline_finetuning_{}shot.h5'.format(finetuning_experiment,loadbb_experiment,shot))
+baseline.load_weights('weights/{}/baseline_finetuning_{}shot.h5'.format(finetuning_experiment,shot))
 performance_baseline_finetune = baseline.evaluate(x=test_img,y=test_label)
-saver.save_output(performance_baseline_finetune,'exp{}_load{}_performance_baseline_finetune_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot))
+saver.save_output(performance_baseline_finetune,'{}/performance_baseline_finetune_{}shot.pickle'.format(finetuning_experiment,shot))
 #pickle.dump(performance_baseline_finetune,open('output/exp{}_load{}_performance_baseline_finetune_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot),'wb'))
 
 
@@ -130,7 +129,7 @@ saver.save_output(performance_baseline_finetune,'exp{}_load{}_performance_baseli
 baseline_plus = Baseline_plus(input_shape=input_shape,
                     classes=classes,
                     loadbb=True,
-                    weights_file='exp{}_baseline_plus_training.h5'.format(loadbb_experiment), # load weights
+                    weights_file='{}/baseline_plus_training.h5'.format(loadbb_experiment), # load weights
                     freezebb=True)
 baseline_plus.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-3),
               metrics=['accuracy'])
@@ -141,14 +140,14 @@ history_baseline_plus = trainer.train_model(model=baseline_plus,
                 val_data=(val_img,val_label),
                 batch_size=16,
                 epochs=100 ,
-                weights_file='exp{}_load{}_baseline_plus_finetuning_{}shot.h5'.format(finetuning_experiment,loadbb_experiment,shot),# save weights
+                weights_file='{}/baseline_plus_finetuning_{}shot.h5'.format(finetuning_experiment,shot),# save weights
                 monitor='val_acc',
                 )
-saver.save_output(history_baseline_plus,'exp{}_load{}_history_baseline_plus_finetuning_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot))
+saver.save_output(history_baseline_plus,'{}/history_baseline_plus_finetuning_{}shot.pickle'.format(finetuning_experiment,shot))
 #pickle.dump(history_baseline_plus,open('output/exp{}_load{}_history_baseline_plus_finetuning_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot),'wb'))
 
 # load best model and evaluate
-baseline_plus.load_weights('weights/exp{}_load{}_baseline_plus_finetuning_{}shot.h5'.format(finetuning_experiment,loadbb_experiment,shot))
+baseline_plus.load_weights('weights/{}/baseline_plus_finetuning_{}shot.h5'.format(finetuning_experiment,shot))
 performance_baseline_plus_finetune = baseline_plus.evaluate(x=test_img,y=test_label)
-saver.save_output(performance_baseline_plus_finetune,'exp{}_load{}_performance_baseline_plus_finetune_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot))
+saver.save_output(performance_baseline_plus_finetune,'{}/performance_baseline_plus_finetune_{}shot.pickle'.format(finetuning_experiment,shot))
 #pickle.dump(performance_baseline_plus_finetune,open('output/exp{}_load{}_performance_baseline_plus_finetune_{}shot.pickle'.format(finetuning_experiment,loadbb_experiment,shot),'wb'))
