@@ -64,7 +64,6 @@ history_baseline_plus = trainer.train_model(model=baseline_plus,
                 )
 saver.save_output(history_baseline_plus,training_experiment,'history_baseline_plus_training.pickle')
 
-
 # release the variables
 del train_train, train_val, train_img, train_label, val_img, val_label
 del baseline, baseline_plus, history_baseline, history_baseline_plus
