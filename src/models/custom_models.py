@@ -12,7 +12,7 @@ base_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..','..')
 weights_folder_path = os.path.join(base_path,'weights')
 
 
-def Baseline_plus(input_shape=None,classes=None,loadbb=False,weights_file=None,freezebb=False):
+def Baseline_plus(input_shape=None,classes=None,loadbb=False,folder_weights=None,weights_file=None,freezebb=False):
     """
 
     :param input_shape:
@@ -30,7 +30,7 @@ def Baseline_plus(input_shape=None,classes=None,loadbb=False,weights_file=None,f
              pooling='avg',
              classes=None)
     if loadbb:
-        weights_path = os.path.join(weights_folder_path,weights_file)
+        weights_path = os.path.join(weights_folder_path,folder_weights,weights_file)
         backbone.load_weights(weights_path,by_name=True)
     if freezebb:
         for layer in backbone.layers:
@@ -45,7 +45,7 @@ def Baseline_plus(input_shape=None,classes=None,loadbb=False,weights_file=None,f
     #                       metrics=['accuracy'])
     return model
 
-def Baseline(input_shape=None,classes=None,loadbb=False,weights_file=None,freezebb=False):
+def Baseline(input_shape=None,classes=None,loadbb=False,folder_weights=None,weights_file=None,freezebb=False):
     """
 
     :param input_shape:
@@ -63,7 +63,7 @@ def Baseline(input_shape=None,classes=None,loadbb=False,weights_file=None,freeze
              pooling='avg',
              classes=None)
     if loadbb:
-        weights_path = os.path.join(weights_folder_path,weights_file)
+        weights_path = os.path.join(weights_folder_path,folder_weights,weights_file)
         backbone.load_weights(weights_path,by_name=True)
     if freezebb:
         for layer in backbone.layers:
