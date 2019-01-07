@@ -73,7 +73,7 @@ test = loader.load_miniImgnet(test_path)
 
 # create dataset for training, validation, testing
 classes=5
-shot = 5
+shot = 1
 
 train_img,train_label,val_img,val_label,test_img,test_label = \
     tester.create_finetuningset(dataset=test,way=classes,shot=shot,querysize=16)
