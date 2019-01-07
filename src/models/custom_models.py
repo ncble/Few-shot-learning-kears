@@ -15,10 +15,9 @@ def Baseline_plus(input_shape=None,classes=None,loadbb=False,weights_file=None,f
 
     :param input_shape:
     :param classes:
-    :param loadbb:
-    :param weights_pth: here,we load weights by name,
-                        so we can use the whole pretrained baseline++ weights
-    :param freezebb:
+    :param loadbb: if load weights to backbone
+    :param weights_pth: here,we load weights by name, so that only the weights of backbone is loaded
+    :param freezebb: if freeze the weights of backbone
     :return:
     """
     # input tensor
@@ -49,10 +48,9 @@ def Baseline(input_shape=None,classes=None,loadbb=False,weights_file=None,freeze
 
     :param input_shape:
     :param classes:
-    :param loadbb:
-    :param weights_pth: here,we load weights by name,
-                        so we can use the whole pretrained baseline++ weights
-    :param freezebb:
+    :param loadbb: if load weights to backbone
+    :param weights_pth: here,we load weights by name, so that only the weights of backbone is loaded
+    :param freezebb: if freeze the weights of backbone
     :return:
     """
     # input tensor

@@ -3,7 +3,7 @@ import numpy as np
 def create_finetuningset(dataset,way=5,shot=5,querysize=16):
     """
     create train set, val set and test set for fine-tuning stage
-    attention: change the labels to 1-...? 先不改试试看
+    attention: change the labels to 0 - classes-1
     :param dataset: test
     :param way:
     :param shot:

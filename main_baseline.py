@@ -8,6 +8,9 @@ from src.utils import tester
 #import keras.backend as K
 
 ####################### training stage ###################
+# The training stage is for training backbone
+#########################################################
+
 # load image
 train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
 train_val_path = 'miniImageNet_category_split_train_phase_val.pickle'
@@ -66,7 +69,8 @@ del baseline, baseline_plus, history_baseline, history_baseline_plus
 
 
 # ##################### fine-tuning stage ######################
-
+# for training a new classifier for novel bases
+##############################################################
 test_path = 'miniImageNet_category_split_test.pickle'
 test = loader.load_miniImgnet(test_path)
 

@@ -10,7 +10,7 @@ def train_model(model,
                 val_data=None ,
                 batch_size=16,
                 epochs=400 ,
-                weights_file=None ,
+                weights_file=None , # save best weights
                 monitor='val_acc',
                 ):
     if weights_file is None:

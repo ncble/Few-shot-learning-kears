@@ -7,6 +7,7 @@ Project folder structure:
        ├── src
             ├── models
             ├── processing
+            ├── utils
        ├── data
        ├── weights
        ├── output
