@@ -1,10 +1,10 @@
 from keras import backend
 from keras import layers
 from keras import models
-# from src.models.backbones import ResNet10
-from backbones import ResNet10
-# from src.models.custom_classifiers import Cos_classifier
-from custom_classifiers import Cos_classifier
+from src.models.backbones import ResNet10
+# from backbones import ResNet10
+from src.models.custom_classifiers import Cos_classifier
+# from custom_classifiers import Cos_classifier
 from keras import optimizers
 import os
 

@@ -1,5 +1,5 @@
-from utils import trainer,loader,tester,saver
-from models.custom_models import Baseline_plus,Baseline
+from src.utils import trainer,loader,tester,saver
+from src.models.custom_models import Baseline_plus,Baseline
 #from src.models.backbones import ResNet10
 from keras import optimizers
 import pickle
