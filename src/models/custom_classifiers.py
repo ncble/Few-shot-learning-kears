@@ -1,5 +1,6 @@
 from keras import backend
-from src.models.custom_layers import CosDense
+# from src.models.custom_layers import CosDense
+from custom_layers import CosDense
 from keras import layers
 from keras import models
 
