@@ -23,8 +23,8 @@ def create_finetuningset(dataset,way=5,shot=5,querysize=16):
     test_label = []
 
     for i, label in enumerate(labels_pick):
-        print("=================")
-        print('class: ', label)
+        # print("=================")
+        # print('class: ', label)
         indices = np.where(labels == label)[0]
         indices_pick = list(np.random.choice(indices, shot + 2 * querysize, replace=True))
         indices_train = indices_pick[:shot]
@@ -51,5 +51,5 @@ def create_finetuningset(dataset,way=5,shot=5,querysize=16):
         test_label += te_label
         #.tolist()
 
-    return train_img,train_label,val_img,val_label,test_img,test_label
+    return train_img,train_label,val_img,val_label,test_img,test_label,labels_pick
 
