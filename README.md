@@ -2,7 +2,6 @@
 
 
 Project folder structure:
-
        .
        ├── src
             ├── models
