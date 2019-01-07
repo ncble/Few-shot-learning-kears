@@ -29,6 +29,7 @@ input_shape = train_img.shape[1:]
 classes = len(train_train[b'catname2label'])
 train_epoch = 1
 
+
 # baseline
 baseline = Baseline(input_shape=input_shape,classes=classes)
 baseline.compile(loss='sparse_categorical_crossentropy', optimizer=optimizers.Adam(lr=1e-3),
