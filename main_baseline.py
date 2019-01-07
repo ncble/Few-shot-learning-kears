@@ -8,8 +8,11 @@ import pickle
 ####################### training stage ###################
 # The training stage is for training backbone
 #########################################################
-# the index for the experiment of training stage
+# the weights will be saved at 'weights/training_setting/'
+# the output will be saved at 'output/training_setting/'
+# if 'training_setting' does not exist under 'weights/' or 'output/', it will be created automatically
 training_experiment = 'training_setting'
+
 
 # load image
 train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
@@ -27,7 +30,7 @@ val_label = train_val[b'labels']
 # define input shape, classes
 input_shape = train_img.shape[1:]
 classes = len(train_train[b'catname2label'])
-train_epoch = 1
+train_epoch = 400
 
 
 # baseline
@@ -74,7 +77,9 @@ del baseline, baseline_plus, history_baseline, history_baseline_plus
 # ##################### fine-tuning stage ######################
 # for training a new classifier for novel classes
 ################################################################
-# the index for the experiment of finetuning stage
+# the weights will be saved at 'weights/finetuning_setting/'
+# the output will be saved at 'output/finetuning_setting/'
+# if 'finetuning_setting' does not exist under 'weights/' or 'output/', it will be created automatically
 finetuning_experiment = 'finetuning_setting'
 loadbb_experiment= 'training_setting'
 
