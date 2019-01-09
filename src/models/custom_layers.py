@@ -64,7 +64,7 @@ class CosDense(Layer):
 
     def call(self, inputs):
         output = K.dot(inputs, self.kernel)
-        input_norm = l2_norm(inputs,axis=-1)
+        input_norm = l2_norm(inputs, axis=-1)
         kernel_norm = l2_norm(self.kernel, axis=0)
         norm_mat = K.dot(input_norm, kernel_norm)
         output = output/norm_mat
