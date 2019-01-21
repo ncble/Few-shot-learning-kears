@@ -8,6 +8,7 @@ args = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"]=args.gpu_num
 gpu_fraction = args.gpu_fra
 
+import numpy as np
 import keras
 import keras.backend as K
 import tensorflow as tf
@@ -20,7 +21,7 @@ from models.custom_models import Baseline_plus, Baseline
 #from src.models.backbones import ResNet10
 from keras.optimizers import Adam
 import pickle
-import numpy as np
+
 
 ####################### training stage ###################
 # The training stage is for training backbone
@@ -33,21 +34,29 @@ import numpy as np
 #######################
 ##      Config
 #######################
-EXP_NAME = "Exp_201"
-EXP_NAME_fine_tune = "Exp_201_fine_tuning"
-train_epoch = 400
+EXP_NAME = "Exp_CUB_201"
+EXP_NAME_fine_tune = "Exp_CUB_201_fine_tuning"
+train_epoch = 300
 
-classes = 64 ## useless TODO
+classes = 100 #
 shot = 5
-finetune_classes = 5
+finetune_classes = 5 ## way
 finetune_epoch = 100
-optimizer_lr = 1e-3
+optimizer_lr = 2*1e-3
 finetune_dirname = EXP_NAME_fine_tune #'finetuning_setting'
 loadbb_experiment = EXP_NAME#'training_setting'
 
-train_train_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_train_phase_train.pickle')
-train_val_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_train_phase_val.pickle')
-test_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_test.pickle')
+# train_train_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_train_phase_train.pickle')
+# train_val_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_train_phase_val.pickle')
+# test_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_test.pickle')
+train_trainX_path = os.path.join("../data/CUB_128/CUB_meta_train_train_X.npy")
+train_trainY_path = os.path.join("../data/CUB_128/CUB_meta_train_train_Y.npy")
+train_valX_path = os.path.join("../data/CUB_128/CUB_meta_train_valid_X.npy")
+train_valY_path = os.path.join("../data/CUB_128/CUB_meta_train_valid_Y.npy")
+
+test_X_path = os.path.join("../data/CUB_128/CUB_meta_test_X.npy")
+test_Y_path = os.path.join("../data/CUB_128/CUB_meta_test_Y.npy")
+
 
 
 #######################
@@ -56,21 +65,23 @@ test_path = os.path.join("../data/MiniImagenet", 'miniImageNet_category_split_te
 # train_train_path = 'miniImageNet_category_split_train_phase_train.pickle'
 # train_val_path = 'miniImageNet_category_split_train_phase_val.pickle'
 
-train_train = loader.load_miniImgnet(train_train_path) 
-train_val = loader.load_miniImgnet(train_val_path)
+# train_train = loader.load_miniImgnet(train_train_path) 
+# train_val = loader.load_miniImgnet(train_val_path)
 
-train_img = train_train[b'data'] ## shape = (38400, 84, 84, 3)
-train_label = train_train[b'labels']
+train_img = np.load(train_trainX_path)
+train_label = np.load(train_trainY_path) 
 
-val_img = train_val[b'data'] ## shape = (18748, 84, 84, 3)
-val_label = train_val[b'labels']
+val_img = np.load(train_valX_path)
+val_label = np.load(train_valY_path)
+
+
+train_img = train_img/255
+val_img = val_img/255
 
 # define input shape, classes
 input_shape = train_img.shape[1:]
-classes = len(train_train[b'catname2label'])
 
-train_img = train_img/255.
-val_img = val_img/255.
+
 
 
 # baseline
@@ -114,7 +125,10 @@ out_filepath = os.path.join("../output/{}/{}".format(EXP_NAME, 'history_baseline
 saver.save_output(history_baseline_plus, out_filepath)
 
 # release the variables
-del train_train, train_val, train_img, train_label, val_img, val_label
+
+
+
+del train_img, train_label, val_img, val_label
 del baseline, baseline_plus, history_baseline, history_baseline_plus
 
 
@@ -130,7 +144,11 @@ del baseline, baseline_plus, history_baseline, history_baseline_plus
 
 
 # test_path = 'miniImageNet_category_split_test.pickle'
-test_set = loader.load_miniImgnet(test_path)
+# test_set = loader.load_miniImgnet(test_path)
+
+
+test_X = np.load(test_X_path)
+test_Y = np.load(test_Y_path)
 
 
 # finetune_classes=5
@@ -139,7 +157,8 @@ test_set = loader.load_miniImgnet(test_path)
 
 # create dataset for training, validation, testing
 train_img, train_label, val_img, val_label, test_img, test_label, labels_pick  = \
-    tester.create_finetuningset(dataset=test_set, way=finetune_classes, shot=shot, querysize=16)
+    loader.load_fewshot_testset(test_X, test_Y, way=finetune_classes, shot=shot, querysize=16)
+
 train_img = train_img/255.
 val_img = val_img/255.
 test_img = test_img/255.
@@ -184,7 +203,9 @@ saver.save_output(history_baseline, out_filepath)
 # load best model and evaluate
 baseline.load_weights('../weights/{}/baseline_finetuning_{}shot.h5'.format(finetune_dirname, shot))
 performance_baseline_finetune = baseline.evaluate(x=test_img, y=test_label)
+
 print(performance_baseline_finetune)
+
 out_filepath = os.path.join("../output/{}/{}".format(finetune_dirname, 'performance_baseline_finetune_{}shot.pickle'.format(shot)))
 saver.save_output(performance_baseline_finetune, out_filepath)
 
@@ -219,6 +240,7 @@ saver.save_output(history_baseline_plus, out_filepath)
 # load best model and evaluate
 baseline_plus.load_weights('../weights/{}/baseline_plus_finetuning_{}shot.h5'.format(finetune_dirname, shot))
 performance_baseline_plus_finetune = baseline_plus.evaluate(x=test_img, y=test_label)
-print(performance_baseline_plus_finetune)
+
 out_filepath = os.path.join("../output/{}/{}".format(finetune_dirname, 'performance_baseline_plus_finetune_{}shot.pickle'.format(shot)))
 saver.save_output(performance_baseline_plus_finetune, out_filepath)
+print(performance_baseline_plus_finetune)

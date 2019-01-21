@@ -31,7 +31,7 @@ def conv_block2(input_tensor,
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = layers.Conv2D(filters1, kernel_size, strides=strides,padding='same',
+    x = layers.Conv2D(filters1, kernel_size, strides=strides, padding='same',
                       kernel_initializer='he_normal',
                       name=conv_name_base + '2a')(input_tensor)
     x = layers.BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
@@ -118,3 +118,10 @@ def ResNet10(input_shape=None,
     model = models.Model(inputs, x, name='resnet10')
 
     return model
+
+if __name__=="__main__":
+    print("Start")
+
+    model = ResNet10(input_shape=(128,128,3), classes=5)
+    model.summary()
+    # import ipdb; ipdb.set_trace()

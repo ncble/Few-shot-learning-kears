@@ -1,6 +1,6 @@
 import os
 from keras.callbacks import ModelCheckpoint
-
+import numpy as np
 # base_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..')
 # weights_dirpath = os.path.join(base_path, 'weights')
 
@@ -27,9 +27,12 @@ def train_model(model,
                 # foldername=None, # the folder under the dir weithts, for saveing weights
                 # weights_file=None , # save best weights
                 monitor='val_acc',
-                save_weights_path=None
-                # weights_dirpath=None
+                save_weights_path=None,
+                verbose=1
                 ):
+    if np.max(x)>100:
+        x = x/255.
+
     if save_weights_path is None:
         print('Error! The filename for weights is empty')
         history = -1
@@ -46,7 +49,8 @@ def train_model(model,
                             shuffle=shuffle,
                             callbacks=[ModelCheckpoint(save_weights_path,
                                                        monitor=monitor,
-                                                       save_best_only=True)]
+                                                       save_best_only=True)],
+                            verbose=verbose
                             )
 
     return history.history
